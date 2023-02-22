@@ -1,0 +1,20 @@
+.container{
+    display:flex;
+}
+
+.image{
+    height: 60px;
+    width: 60px
+}
+
+.title{
+    font-size: 40px;
+    font-weight: 400;
+    padding-top: 5px;
+    padding-left: 5px;
+}
+
+.subtitle{
+    margin-left: 70px;
+    white-space: nowrap;
+}

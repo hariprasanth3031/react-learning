@@ -1,5 +1,20 @@
-.container{
+.main_container{
     display: flex;
-    justify-content: space-evenly;
-    align-items: row;
+    flex-direction: column;
+    height: 100vh;
+    padding: 25px;
+    background-color: black;
+}
+
+.header{
+    flex: 2;
+}
+
+.tv_show_details{
+    flex: 4;
+}
+
+.tv_recommended_shows{
+    flex: 2;
+
 }

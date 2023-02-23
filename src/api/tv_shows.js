@@ -10,4 +10,10 @@ export class TVShowApi{
         // console.log(response.data.results);
         return fake_data;
     }
+
+    static async fetchRecommendedShows(tvShowId){
+        const response = await axios.get(`${BASE_URL}tv/${tvShowId}/recommendations${API_KEY}`);
+        console.log(response.data.results);
+        return fake_data;
+    }
 }

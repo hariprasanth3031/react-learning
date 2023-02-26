@@ -5,7 +5,8 @@ import { BG_DROP_URL} from "./config.js"
 import { TvShowDetails } from "./components/TV_Show_Details/Tvshowdetails";
 import { Logo } from "./components/Logo/Logo";
 import logoImg from "./assets/images/Logo.png";
-import { TVShowListItems } from "./components/TVShowListItems/TVShowListItems";
+import { TvShowList } from "./components/TV_Show_List/TvShowList";
+import { SearchBar } from "./components/SearchBar/SearchBar";
 
 export function App(){
 
@@ -16,16 +17,40 @@ export function App(){
     console.log(currentTVShow)
     
     async function fetchPopular(){
-        const popularTVShow = await TVShowApi.fetchPopular();
-        if(popularTVShow.length > 0){
-            setCurrentTVShow(popularTVShow[0]);
+        try{
+            const popularTVShow = await TVShowApi.fetchPopular();
+            if(popularTVShow.length > 0){
+                setCurrentTVShow(popularTVShow[0]);
+            }
+        }
+        catch{
+            alert("Something went wrong while fetching popular shows");
         }
     }
 
     async function fetchRecommendation(tvShowId){
-        const  recommendationListResp= await TVShowApi.fetchRecommendedShows(tvShowId);
-        if(recommendationListResp.length > 0){
-            setCurrentTVShow(recommendationListResp.slice(0,10));
+        try{
+            const  recommendationListResp = await TVShowApi.fetchRecommendedShows(tvShowId);
+            if(recommendationListResp.length > 0){
+                setRecommendationList(recommendationListResp.slice(0,10));
+            }
+        }
+        catch{
+            alert("Something went wrong while fetching recommended shows");
+        }
+        
+    }
+
+
+    async function fetchByTitle(title){
+        try{
+            const  fetchByTitleResp = await TVShowApi.fetchByTitle(title);
+            if(fetchByTitleResp.length > 0){
+           setCurrentTVShow(fetchByTitleResp[0 ])
+        }
+        }
+        catch{
+            alert("Something went wrong while searching shows");
         }
     }
 
@@ -42,7 +67,11 @@ export function App(){
         
     }, [currentTVShow]);
 
-    console.log(recommendationList)
+    function updateCurrentTVShow(tvShow){
+        setCurrentTVShow(tvShow)
+    }
+
+   console.log(recommendationList)
       
     return (
        <div className={s.main_container}
@@ -61,7 +90,7 @@ export function App(){
                         />
                     </div>
                     <div className="col-md-12 col-lg-4">
-                        <input style = {{width:"100%"}}  type= "text"/>
+                        <SearchBar  onSubmit = {fetchByTitle}/> 
                     </div>
                 </div>
             </div>
@@ -69,13 +98,7 @@ export function App(){
                 {currentTVShow && <TvShowDetails tvShow = {currentTVShow} />}
             </div>
             <div className={s.tv_recommended_shows}>
-                {currentTVShow && 
-                (<TVShowListItems 
-                    tvShow = {currentTVShow} 
-                    onClick = {(tvShow) => {
-                        console.log("I'm been clicked", tvShow)
-                    }}
-                />)}
+                {currentTVShow && <TvShowList onClickItem = {updateCurrentTVShow} tvShowList = {recommendationList}/> }
             </div>
        </div> 
     );
